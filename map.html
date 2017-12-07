@@ -23,7 +23,9 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/map.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     </head>
 
@@ -107,45 +109,74 @@
     <p id="error"></p>
 </div> -->
 
-<div class="w3-content" id="fare-estimates">
+<div id="container2" style="width:100%; height:650px;"></div>
+<script type="text/javascript">
+    var lyft_names = [];
+    var lyft_prices = [];
+    var lyft_results =  JSON.parse(localStorage.getItem("lyft_result"));
 
-    <div class="w3-container w3-center">
-        <h3>Compare Rideshare Fares</h3>
-    </div>
+    var uber_names = [];
+    var uber_prices = [];
+    var uber_results =  JSON.parse(localStorage.getItem("uber_result"));
 
-    <div class="w3-row-padding" id="fare-compare-row-0">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-0"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-0"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-1">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-1"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-1"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-2">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-2"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-2"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-3">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-3"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-3"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-4">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-4"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-4"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-5">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-5"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-5"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-6">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-6"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-6"></div>
-    </div>
-    <div class="w3-row-padding" id="fare-compare-row-7">
-        <div class="w3-half w3-margin-bottom" id="lyft-estimate-7"></div>
-        <div class="w3-half w3-margin-bottom" id="uber-estimate-7"></div>
-    </div>
-</div>
+    uber_results.pop();
+    uber_results.pop();
+
+
+    lyft_results.forEach(function(data){
+        lyft_names.push(data.display_name);
+        lyft_prices.push((data.estimated_cost_cents_max)/100);
+    });
+
+    uber_results.forEach(function(data){
+        uber_names.push(data.ride_type);
+        uber_prices.push(data.high_estimate);
+    });
+
+ Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'LYFT vs UBER Estimates'
+    },
+    subtitle: {
+        text: 'Lowest to Highest'
+    },
+    xAxis: {
+        categories: lyft_names,
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Cost ($)'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'LYFT FARES',
+        data: lyft_prices
+    },{
+        name: 'UBER FARES',
+        data: uber_prices
+    }]
+});   
+
+</script>
 
         <footer class="footer">
 
@@ -184,7 +215,7 @@
             </div>
 
         </footer>
-        
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApJGzCllhUXaFxRLxToaHDiQECpbK67P0&libraries=places&callback=initGeolocation" async defer></script>
 
 </body>
