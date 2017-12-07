@@ -44,10 +44,6 @@ function initMap(position) {
 		pickup_lat = position.coords.latitude;
 		pickup_lng = position.coords.longitude;
 		warningMessage.innerHTML = "Latitude: " + pickup_lat + " Longitude: " + pickup_lng;
-
-		//added prints
-		console.log(pickup_lat);
-		console.log(pickup_lng);
 	}
 
 	directionsService = new google.maps.DirectionsService;
@@ -55,7 +51,7 @@ function initMap(position) {
     geocoder = new google.maps.Geocoder();
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: pickup_lat, lng: pickup_lng},
-		zoom: 14,
+		zoom: 16,
 		mapTypeControl: false,
 		fullscreenControl: false,
 		streetViewControl: false,
@@ -87,14 +83,11 @@ function initMap(position) {
 }
 
 function makeAutocompleteCallback(marker, autocomplete) {
-	resetCompareRows();
-
 	var autocompleteCallback = function() {
 		marker.setVisible(false);
 		var place = autocomplete.getPlace();
 		if (!place.geometry) {
 			alert("Error: Not valid address/route");
-			resetCompareRows();
 			return;
 		}
 
@@ -148,17 +141,11 @@ function setLatLng(addressIndex, latitude, longitude) {
 	} else {
 		dropoff_lat = latitude;
 		dropoff_lng = longitude;
-
-		//added prints
-		console.log(dropoff_lat);
-		console.log(dropoff_lng);
 	}
 	routeFlag[addressIndex] = true;
 }
 
 function resetLatLng(addressIndex) {
-	resetCompareRows();
-
 	if(addressIndex == 0) {
 		pickup_lat = null;
 		pickup_lng = null;
@@ -169,18 +156,10 @@ function resetLatLng(addressIndex) {
 	routeFlag[addressIndex] = false;
 }
 
-function resetCompareRows() {
-	for (var i = 0; i < 8; i++) {
-		$("#fare-compare-row-"+i).empty();
-	}
-	$("#fare-estimates").hide();
-}
-
 function calculateAndDisplayRoute() {
 	if(routeFlag[0] == true && routeFlag[1] == true) 
-	{	
-		resetCompareRows();
-
+	{
+		$("#fare-estimates").hide();
 		directionsService.route({
 			origin: document.getElementById('pickup-input').value,
 			destination: document.getElementById('dropoff-input').value,
@@ -273,15 +252,18 @@ function displayLyftEstimates(JSONObj) {
 	
 	for (var i = 0; i < results.length; i++) 
 	{
-		$("#fare-compare-row-"+i).append("<div class=\"w3-half w3-margin-bottom\"> \
-            <img src=\"images/lyft_logo.jpg\" alt=\"Lyft\" style=\"width:100%;\"> \
-            <div class=\"w3-container w3-white\"> \
+		$("#lyft-estimate-"+i).html("");
+		$("#lyft-estimate-"+i).append(" \
+			<div class=\"w3-container w3-white w3-center\"> \
+				<img src=\"images/lyft_logo.jpg\" alt=\"Lyft\" style=\"display:block; margin:auto; width:60%; max-width:300px;\"> \
+			</div> \
+            <div class=\"w3-container w3-white w3-center\"> \
             	<h3>"+results[i].display_name+"</h3> \
             	<p class=\"w3-text-green\">$"+(results[i].estimated_cost_cents_min/100).toFixed(2)+" (Estimated Ride Cost)</p> \
                 <p>"+Math.ceil((results[i].estimated_duration_seconds/60))+" mins (Estimated Ride Duration)</p> \
                 <p>"+results[i].estimated_distance_miles+" miles (Estimated Ride Distance)</p> \
-            	<button class=\"w3-button w3-margin-bottom\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
-            </div></div>");
+            	<button class=\"w3-button w3-margin-bottom w3-blue-grey\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
+            </div>");
 	}
 }
 
@@ -388,15 +370,18 @@ function displayUberEstimates(JSONObj) {
 
 	for (var i = 0; i < results.length; i++) 
 	{
-		$("#fare-compare-row-"+i).append("<div class=\"w3-half w3-margin-bottom\"> \
-            <img src=\"images/uber_logo.jpg\" alt=\"Uber\" style=\"width:100%;\"> \
-            <div class=\"w3-container w3-white\"> \
+		$("#uber-estimate-"+i).html("");
+		$("#uber-estimate-"+i).append(" \
+			<div class=\"w3-container w3-white w3-center\"> \
+			<img src=\"images/uber_logo.jpg\" alt=\"Uber\" style=\"display:block; margin:auto; width:60%; max-width:300px;\"> \
+			</div> \
+            <div class=\"w3-container w3-white w3-center\"> \
             	<h3>"+results[i].display_name+"</h3> \
             	<p class=\"w3-text-green\">$"+results[i].low_estimate+" - "+results[i].high_estimate+" (Estimated Ride Cost)</p> \
                 <p>"+Math.ceil(results[i].duration/60)+" mins (Estimated Ride Duration)</p> \
                 <p>"+results[i].distance+" miles (Estimated Ride Distance)</p> \
-            	<button class=\"w3-button w3-margin-bottom\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
-            </div></div>");
+            	<button class=\"w3-button w3-margin-bottom w3-blue-grey\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
+            </div>");
 	}
 }
 
