@@ -49,7 +49,7 @@
                     <nav class="main-nav">
                         <ul>
                             <li class="active"><a href="index.html">Home</a></li>
-                            <li><a href="services.html">MAPS</a></li>
+                            <li><a href="map.html">MAPS</a></li>
                                 <li><a href="#!">Account</a>
                                 <ul>
                                     <li><a href="Logout.html">Logout</a></li>
@@ -83,26 +83,11 @@
         <div class="content">
 
             <!-- Slider start -->
-<!--             <div class="slider owl-carousel">
-                <div class="slide">
-                    <img src="http://placehold.it/1600x900" alt="" class="slider-image" />
-                    <div class="slider-subtitle">Call us 24/7</div>
-                    <div class="slider-title">1-800-200-300</div>
-                    <div class="slider-button"><a href="about.html" class="btn btn-primary">Read more about us</a></div>
-                </div>
-                <div class="slide">
-                    <img src="http://placehold.it/1600x900" alt="" class="slider-image" />
-                    <div class="slider-subtitle">Only high qualified</div>
-                    <div class="slider-title">Chauffers</div>
-                    <div class="slider-button"><a href="drivers.html" class="btn btn-primary">Check out our drivers</a></div>
-                </div>
-                <div class="slide">
-                    <img src="http://placehold.it/1600x900" alt="" class="slider-image" />
-                    <div class="slider-subtitle">Our offer includes</div>
-                    <div class="slider-title">Services</div>
-                    <div class="slider-button"><a href="services.html" class="btn btn-primary">How can we help</a></div>
-                </div>
-            </div> -->
+            <div class="slider owl-carousel">
+            <div class="slide" id="map" style="height:92%; width:100%; max-width: 100%">
+                <!-- <div class="w3-display-container w3-content w3-border-bottom"> -->
+                 <!-- id="map" style="height:92%; width:100%; max-width: 100%"></div> -->
+            </div></div>
              <!-- Slider end -->
 
     <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
@@ -110,13 +95,11 @@
 <!--         <a href="#" class="w3-bar-item w3-button w3-right w3-hover-red w3-text-grey"><i class="fa fa-search"></i></a>
     </div> -->
 
-    <div class="w3-display-container w3-content w3-border-bottom" id="map" style="height:92%; width:100%; max-width: 100%"></div>
+
            
     <!-- Booking start -->
             <section class="booking">
                 <div class="container">
-                    <div class="w3-display-container w3-content w3-border-bottom" id="map" style="height:92%; width:100%; max-width: 100%">
-                    </div>
 
                     <div class="row">
                         <div class="col-sm-12">
@@ -126,8 +109,9 @@
                             </div>
                         </div>
                     </div>
-                    <form class="booking-form">
-                            
+                    <!-- <div id="trip-route-display" style="width:80%"> -->
+
+                    <!-- <form class="booking-form"> -->
                         <div class="row">
 
                             <div class="col-lg-6">
@@ -139,16 +123,35 @@
                                     <input type="text" name="to" placeholder="To" id="dropoff-input"/>
                                 </fieldset>
                             </div>
-                            
-                    </form>
+                            </div>
+                    <!-- </form> -->
+
+                <!-- </div> -->
                 </div>
-            </section>
+
+
+    <div class="w3-content" id="fare-estimates" style="max-width:100%;">
+    <div class="w3-container w3-center">
+        <h3>Compare Rideshare Fares</h3>
+    </div>
+
+    <div class="w3-row-padding" id="fare-compare-row-0"></div>
+    <div class="w3-row-padding" id="fare-compare-row-1"></div>
+    <div class="w3-row-padding" id="fare-compare-row-2"></div>
+    <div class="w3-row-padding" id="fare-compare-row-3"></div>
+    <div class="w3-row-padding" id="fare-compare-row-4"></div>
+    <div class="w3-row-padding" id="fare-compare-row-5"></div>
+    <div class="w3-row-padding" id="fare-compare-row-6"></div>
+    <div class="w3-row-padding" id="fare-compare-row-7"></div>
+    </div>
+    </section>
             <!-- Booking end -->
 
             <div class="w3-bar w3-border-bottom alert alert-warning" id="warning-div">
                 <p id="warning-message"></p>
             </div>
         </div>
+
         <!-- Content end -->
         <!-- Footer start -->
         <footer class="footer">
