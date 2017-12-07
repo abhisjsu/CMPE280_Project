@@ -1,10 +1,15 @@
+if (window.location.protocol != 'https:') {
+	window.location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+
 var warningMessage = null;
 var directionsService = null;
 var directionsDisplay = null;
 var geocoder = null;
+var trafficLayer = null;
 var map = null;
-var pickup_lat = 37.3367759;
-var pickup_lng = -121.8785638;
+var pickup_lat = 37.3367759;	// Default
+var pickup_lng = -121.8785638;	// Default
 var dropoff_lat = null;
 var dropoff_lng = null;
 var routeFlag = [false,false];
@@ -12,6 +17,7 @@ var routeFlag = [false,false];
 function initGeolocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(initMap, showError);
+        // navigator.geolocation.watchPosition(updateLatLng, showError);
     } else {
         warningMessage.innerHTML = "Geolocation is not supported by this browser.";
         initMap(null);
@@ -40,18 +46,20 @@ function showError(error) {
 }
 
 function initMap(position) {
+
 	if(position) {
 		pickup_lat = position.coords.latitude;
 		pickup_lng = position.coords.longitude;
-		warningMessage.innerHTML = "Latitude: " + pickup_lat + " Longitude: " + pickup_lng;
 	}
 
 	directionsService = new google.maps.DirectionsService;
     directionsDisplay = new google.maps.DirectionsRenderer;
     geocoder = new google.maps.Geocoder();
+    trafficLayer = new google.maps.TrafficLayer();
+
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: pickup_lat, lng: pickup_lng},
-		zoom: 16,
+		zoom: 17,
 		mapTypeControl: false,
 		fullscreenControl: false,
 		streetViewControl: false,
@@ -59,9 +67,11 @@ function initMap(position) {
 	});
 	
 	directionsDisplay.setMap(map);
+	trafficLayer.setMap(map);
 
 	var tripRouteDisplay = document.getElementById('trip-route-display');
 	map.controls[google.maps.ControlPosition.TOP_CENTER].push(tripRouteDisplay);
+	$("#trip-route-display").show();
 
 	var input = [];
 	input.push(document.getElementById('pickup-input'));
@@ -80,6 +90,7 @@ function initMap(position) {
 	}
 
 	geocodeAddress(); // Ran once at load
+	reverseGeocodeAddress(geocoder,map);
 }
 
 function makeAutocompleteCallback(marker, autocomplete) {
@@ -87,7 +98,7 @@ function makeAutocompleteCallback(marker, autocomplete) {
 		marker.setVisible(false);
 		var place = autocomplete.getPlace();
 		if (!place.geometry) {
-			alert("Error: Not valid address/route");
+			// console.log("Error: Not valid address/route");
 			return;
 		}
 
@@ -113,20 +124,38 @@ function geocodeAddress() {
 
 	for(var addressIndex = 0; addressIndex < address.length; addressIndex++)
 	{
-		// alert(address[addressIndex]);
 		geocoder.geocode({'address': address[addressIndex]}, makeGeocodeCallback(addressIndex));
 	}
 }
 
+function reverseGeocodeAddress(geocoder, map) {
+	// var latlng = {lat: parseFloat(pickup_lat), lng: parseFloat(pickup_lng)};
+	var latlng = {lat: pickup_lat, lng: pickup_lng};
+	geocoder.geocode({'location': latlng}, function(results, status) {
+		if (status === 'OK') {
+			if (results[0]) {
+				var marker = new google.maps.Marker({
+					position: latlng,
+					map: map
+				});
+				$("#pickup-input").val(results[0].formatted_address);
+			} else {
+				console.log('No results found');
+			}
+		} else {
+			console.log('Geocoder failed due to: ' + status);
+		}
+	});
+}
+
 function makeGeocodeCallback(addressIndex) {
-	// alert("addressIndex: " + JSON.stringify(addressIndex));
 	var geocodeCallback = function(results, status) {
 		if (status === 'OK') {
 			var obj = JSON.parse(JSON.stringify(results));
 			setLatLng(addressIndex, obj[0].geometry.location.lat, obj[0].geometry.location.lng);
 			calculateAndDisplayRoute();
 		} else {
-			// alert('Geocode was not successful for the following reason: ' + status);
+			// console.log('Geocode was not successful for the following reason: ' + status);
 			resetLatLng(addressIndex);
 		}
 	};
@@ -171,7 +200,7 @@ function calculateAndDisplayRoute() {
 				getLyftEstimates();
 				$("#fare-estimates").show();
 			} else {
-				// alert('ROUTE FAILED: ' + status);
+				console.log('ROUTE FAILED: ' + status);
 			}
 		});
 	}
@@ -199,16 +228,6 @@ function getLyftEstimates() {
 	xhttp.open("GET", lyft_estimates_url, true);
 	xhttp.setRequestHeader("Authorization", "bearer " + lyft_client_token);
 	xhttp.send();
-
-	// var xmlhttp = new XMLHttpRequest();
-	// xmlhttp.onreadystatechange = function() {
-	//     if (this.readyState == 4 && this.status == 200) {
-	//         var JSONObj = JSON.parse(this.responseText);
-	//         displayLyftEstimates(JSONObj);
-	//     }
-	// };
-	// xmlhttp.open("GET", "lyftPrices.json", true);
-	// xmlhttp.send();
 }
 
 function displayLyftEstimates(JSONObj) {
@@ -275,53 +294,36 @@ function getUberEstimates() {
 	     'https://api.uber.com/v1.2/estimates/price?start_latitude=37.3120321&start_longitude=-121.95222860000001&end_latitude=37.3844772&end_longitude=-121.93272890000003&server_token=RUOqYOd-IgBcjFQ4J8mHc7ixW3vD9nRX3-f_Llrn'
 	*/
 
+	var uber_access_token = "KA.eyJ2ZXJzaW9uIjoyLCJpZCI6InB6YnJrZzNlU0RLSlpacGZkNnhacUE9PSIsImV4cGlyZXNfYXQiOjE1MTUyMjMyNDUsInBpcGVsaW5lX2tleV9pZCI6Ik1RPT0iLCJwaXBlbGluZV9pZCI6MX0.IO22hUn1WE8v4CioDz-S4O_CfWl6hoQSJFxm4BteMvw";
 	var uber_client_id = "3JajizBicUQTjxJrh8R0iDgt_HUBCJWS";
+	var uber_client_secret = "5NAqxlNLlRMXne7TVyUzQgxR91fN6tMzkKQFgXNM";
 	var uber_server_token = "RUOqYOd-IgBcjFQ4J8mHc7ixW3vD9nRX3-f_Llrn";
-	var uber_estimates_url = "https://api.uber.com/v1.2/estimates/price?start_latitude="+pickup_lat+"&start_longitude="+pickup_lng+"&end_latitude="+dropoff_lat+"&end_longitude="+dropoff_lng+"&server_token="+uber_server_token;
-
-	// var xmlhttp = new XMLHttpRequest();
-	// xmlhttp.onreadystatechange = function() {
-	//     if (this.readyState == 4 && this.status == 200) {
-	//         var JSONObj = JSON.parse(this.responseText);
-	//         displayUberEstimates(JSONObj);
-	//         // warningMessage.innerHTML = this.responseText;
-	//     }
-	// };
-	// xmlhttp.open("GET", "uberPrices.json", true);
-	// xmlhttp.send();
-
-	// var xmlhttp = new XMLHttpRequest();
-	// xmlhttp.onreadystatechange = function() {
-	//     if (this.readyState == 4 && this.status == 200) {
-	//         var JSONObj = JSON.parse(this.responseText);
-	//         warningMessage.innerHTML = this.responseText;
-	//     } else {
-	//     	warningMessage.innerHTML = this.responseText;
-	//     }
-	// };
-	// xmlhttp.open("GET", uber_estimates_url, true);
-	// xmlhttp.send();
-
+	var uber_estimates_price_url = "https://api.uber.com/v1.2/estimates/price";
+	
 	$.ajax({
-        url: "http://127.0.0.1:5000/get_uber_estimates",
-        type: "POST",
-        datatype:"json",
-        data: {	'pickup_lat':pickup_lat,
-        		'pickup_lng':pickup_lng,
-        		'dropoff_lat':dropoff_lat,
-        		'dropoff_lng':dropoff_lng
-    	},
-        success: function(response){
-        	var JSONObj = JSON.parse(response);
-            displayUberEstimates(JSONObj);
-        },
-        error: function(err){
-        	console.log(JSON.stringify(err));
-        }
-    });
+		url: uber_estimates_price_url,
+		type: "GET",
+		data: {
+	        start_latitude: pickup_lat,
+		    start_longitude: pickup_lng,
+		    end_latitude: dropoff_lat,
+		    end_longitude: dropoff_lng,
+		    server_token: uber_server_token,
+		    upfront_fare_enabled: true
+	    },
+		success: function(result,status,xhr) {
+			console.log(JSON.stringify(result));
+	        displayUberEstimates(result,uber_client_id);
+	    },
+	    error: function(xhr,status,error) {
+	    	console.log(JSON.stringify(xhr));
+	    	console.log(JSON.stringify(status));
+	    	console.log(JSON.stringify(error));
+	    }
+	});
 }
 
-function displayUberEstimates(JSONObj) {
+function displayUberEstimates(JSONObj,uber_client_id) {
 
 	var rideIndex = {
 		POOL:0,
@@ -335,9 +337,9 @@ function displayUberEstimates(JSONObj) {
 	};
 	var results = [rideIndex.length];
 	
-	for (var i = 0; i < JSONObj.length; i++)
+	for (var i = 0; i < JSONObj.prices.length; i++)
 	{
-		switch(JSONObj[i].localized_display_name) {
+		switch(JSONObj.prices[i].localized_display_name) {
 			case 'POOL':
 				index = rideIndex.POOL;
 		        break;
@@ -365,11 +367,18 @@ function displayUberEstimates(JSONObj) {
 		    default:
 		        break;
 		}
-		results[index] = JSONObj[i];
+		results[index] = JSONObj.prices[i];
 	}
 
+	var uber_deep_link = "https://m.uber.com/";
+	if( screen.width <= 480 ) {     
+		uber_deep_link += "ul/";
+	}
 	for (var i = 0; i < results.length; i++) 
 	{
+		var uri = uber_deep_link+"?client_id="+uber_client_id+"&action=setPickup&pickup[latitude]="+pickup_lat+"&pickup[longitude]="+pickup_lng+"&pickup[formatted_address]="+$("#pickup-input").val()+"&dropoff[latitude]="+dropoff_lat+"&dropoff[longitude]="+dropoff_lng+"&dropoff[formatted_address]="+$("#dropoff-input").val()+"&product_id="+results[i].product_id;
+		var uber_app_link = encodeURI(uri);
+
 		$("#uber-estimate-"+i).html("");
 		$("#uber-estimate-"+i).append(" \
 			<div class=\"w3-container w3-white w3-center\"> \
@@ -380,13 +389,14 @@ function displayUberEstimates(JSONObj) {
             	<p class=\"w3-text-green\">$"+results[i].low_estimate+" - "+results[i].high_estimate+" (Estimated Ride Cost)</p> \
                 <p>"+Math.ceil(results[i].duration/60)+" mins (Estimated Ride Duration)</p> \
                 <p>"+results[i].distance+" miles (Estimated Ride Distance)</p> \
-            	<button class=\"w3-button w3-margin-bottom w3-blue-grey\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
+            	<button class=\"w3-button w3-margin-bottom w3-blue-grey\" onclick=\"window.open(\'"+uber_app_link+"\');\">Request Ride <span class=\"glyphicon glyphicon-new-window\"></span></button> \
             </div>");
 	}
 }
 
 $(document).ready(function() {
 	warningMessage = document.getElementById("warning-message");
+	$("#trip-route-display").hide();
 	$("#warning-div").hide();
 	$("#fare-estimates").hide();
 });
