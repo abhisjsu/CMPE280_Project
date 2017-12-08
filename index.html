@@ -1,86 +1,151 @@
 <!DOCTYPE html>
-<html lang="en-US">
-<head>
-    <title>WebLegion</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="description" content="Taxi Grabber - HTML Template">
+        <meta name="author" content="Coffeecream Themes, info@coffeecream.eu">
+        <title>Web Legion Taxi Booking</title>
+<!--        <link rel="shortcut icon" href="images/favicon.png"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <!-- Main Stylesheet -->
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/main.js"></script>
-</head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
 
-<body class="w3-light-grey">
+    </head>
 
-<nav class="navbar navbar-default w3-bar w3-white w3-border-bottom w3-xlarge">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a href="#" class="w3-bar-item w3-button w3-text-red w3-hover-red" id="logo"><b><i class="fa fa-map-marker w3-margin-right"></i>WebLegion</b></a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-            <!-- <li class="active"><a href="#">Home</a></li> -->
-            <!-- <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Not Working<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">Page 1-2</a></li>
-                    <li><a href="#">Page 1-3</a></li>
-                </ul>
-            </li> -->
-            <li><a href="#" data-toggle="modal" data-target="#myModal" id="high-chart-toggle">High Charts</a></li>
-            <li><a href="#" id="contact-btn">Contact</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
-    </div>
-</nav>
 
-<div class="w3-display-container" id="trip-route-display">
-    <div class="w3-container w3-white w3-padding">
-        <div class="w3-row-padding" id="address-input-row">
-            <div class="w3-half" id="address-input-half">
-                <input class="w3-input w3-border" id="pickup-input" type="text" placeholder="Pick-Up Address">
+        <body><br>
+            <div id="google_translate_element"></div><script type="text/javascript">
+            function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+            }
+</script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+        <!-- Header start -->
+        <header class="header">
+            <div class="top-bar">
+                <div class="container">
+
+                    <button id="phone-trigger" class="phone-trigger ion-android-call"></button>
+                    <ul class="phones">
+                        <li><a href="tel:1-408-708-6486"><span>Abhishek</span> 1-408-708-6486</a></li>
+                        <li><a href="tel:1-562-240-7185"><span>Kamesh</span> 1-562-240-7185</a></li>
+                        <li><a href="tel:1-925-200-7284"><span>Lorenzo</span> 1-925-200-7284</a></li>
+                    </ul>
+                </div>
             </div>
-            <!-- <span class="glyphicon glyphicon-arrow-right"></span> -->
-            <div class="w3-half" id="address-input-half">
-                <input class="w3-input w3-border" id="dropoff-input" type="text" placeholder="Drop-Off Address">
+            <div id="nav-bar" class="nav-bar">
+                <div class="container">
+                    <a href="index.html" class="logo"><img src="images/logo.jpeg" alt="Taxi Grabber - HTML Template" /></a>
+                   
+                    <nav class="main-nav">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="map.html">MAPS</a></li>
+                                <li><a href="#!">Quick Links</a>
+                                <ul>
+                                    <li><a href="about.html">About US</a></li>
+                                    <li><a href="services.html">Services</a></li>
+                                </ul>
+                            </li>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <svg height="20" width="2560" class="pattern">
+            <defs>
+            <pattern id="header-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="10" height="10" />
+                <rect x="10" y="10" width="10" height="10" />
+            </pattern>
+            <mask id="header-mask" x="0" y="0" width="2560" height="20" >
+                <rect x="0" y="0"  width="2560" height="20" />
+            </mask>
+            </defs>
+            <rect x="0" y="0" width="2560" height="20" id="header-image" />
+            </svg>
+
+        </header>
+
+
+        <!-- Content start -->
+        <div class="content">
+
+            <!-- Slider start -->
+            <div class="slider owl-carousel">
+            <div class="slide" id="map" style="height:92%; width:100%; max-width: 100%">
+                <!-- <div class="w3-display-container w3-content w3-border-bottom"> -->
+                 <!-- id="map" style="height:92%; width:100%; max-width: 100%"></div> -->
+            </div></div>
+             <!-- Slider end -->
+
+    <div class="w3-bar w3-white w3-border-bottom w3-xlarge">
+
+<!--         <a href="#" class="w3-bar-item w3-button w3-right w3-hover-red w3-text-grey"><i class="fa fa-search"></i></a>
+    </div> -->
+
+
+           
+    <!-- Booking start -->
+            <section class="booking">
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="title">
+                                <h4>Select taxi online</h4>
+                                <h6>Save time &amp; money</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div id="trip-route-display" style="width:80%"> -->
+
+                    <!-- <form class="booking-form"> -->
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <fieldset>
+                                    <input type="text" name="from" placeholder="From" id="pickup-input" />
+                                </fieldset></div>
+                            <div class="col-lg-6">
+                                <fieldset>
+                                    <input type="text" name="to" placeholder="To" id="dropoff-input"/>
+                                </fieldset>
+                            </div>
+                            </div>
+                    <!-- </form> -->
+
+                <!-- </div> -->
+                </div>
+
+    </section>
+            <!-- Booking end -->
+
+            <div class="w3-bar w3-border-bottom alert alert-warning" id="warning-div">
+                <p id="warning-message"></p>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="w3-display-container w3-content w3-border-bottom" id="map">
-</div>
-
-<div class="w3-bar w3-border-bottom alert alert-warning" id="warning-div">
-    <p id="warning-message"></p>
-</div>
-
-<!-- <div class="w3-bar w3-border-bottom alert alert-danger">
-    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-    <p id="error"></p>
-</div> -->
-
-<div class="w3-content" id="fare-estimates">
+    <div class="w3-content" id="fare-estimates">
 
     <div class="w3-container w3-center">
-        <h3>Rideshare Fare Comparison</h3>
+        <h3>Compare Rideshare Fares</h3>
     </div>
 
     <div class="w3-row-padding" id="fare-compare-row-0">
@@ -116,54 +181,47 @@
         <div class="w3-half w3-margin-bottom" id="uber-estimate-7"></div>
     </div>
 </div>
+        <!-- Content end -->
+        <!-- Footer start -->
+        <footer class="footer">
 
-<div class="w3-container" id="contact">
-    <h2>Contact</h2>
-    <p>If you have any questions, do not hesitate to ask them.</p>
-    <i class="fa fa-map-marker w3-text-red" style="width:30px"></i> San Jose, CA<br>
-    <i class="fa fa-phone w3-text-red" style="width:30px"></i> Phone: (925) 200-7284<br>
-    <i class="fa fa-envelope w3-text-red" style="width:30px"> </i> Email: lorenzo.javier@sjsu.edu<br>
-    <form action="/action_page.php" target="_blank">
-        <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Name" required name="Name"></p>
-        <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Email" required name="Email"></p>
-        <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Message" required name="Message"></p>
-        <p><button class="w3-button w3-black w3-padding-large" type="submit">SEND MESSAGE</button></p>
-    </form>
-</div>
-
-<footer class="w3-padding-32 w3-black w3-center w3-margin-top">
-    <h5>Find Us On</h5>
-    <div class="w3-xlarge w3-padding-16">
-        <i class="fa fa-facebook-official w3-hover-opacity"></i>
-        <i class="fa fa-instagram w3-hover-opacity"></i>
-        <i class="fa fa-snapchat w3-hover-opacity"></i>
-        <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-        <i class="fa fa-twitter w3-hover-opacity"></i>
-        <i class="fa fa-linkedin w3-hover-opacity"></i>
-    </div>
-    <!-- <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank" class="w3-hover-text-green">w3.css</a></p> -->
-</footer>
-
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <!-- <h4 class="modal-title">Modal Header</h4> -->
+            <div class="widgets">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="widget">
+                                <h6>About us</h6>
+                                <p>This application has been created to show the price comparison of LYFT and UBER, most of the times the USer has to separately check for the CAB prices for each service individually for better opetion. This API will provide side by side comparison with the options listed in a sorted manner</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="widget">
+                                <h6>Quick links</h6>
+                                <ul class="quick-links">
+                                    <li class="active"><a href="index.html">Home</a></li>
+                                    <li><a href="map.html">High Charts</a></li>
+                                    <li><a href="services.html">Services</a></li>
+                                    <li><a href="about.html">About</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-3">
+                            <div class="widget">
+                                <h6>Contact</h6>
+                                <ul class="contact">
+                                    <li class="hotline"><a href="tel:1-800-200-300">1-408-708-6486</a></li>
+                                    <li class="email"><a href="mailto:abhishek.chaudhary@sjsu.edu">Abhishek chaudhary</a></li>
+                                    <li class="address">San Jose State University<br>San Jose, CA 95110</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" id="highchart">
-                <!-- <p>This is a large modal.</p>
-                <div id="highchart" style="min-width: 310px; height: 500px; margin: 0 auto"></div>
-                <div id="highchart" style="min-width: 310px; height: 500px; margin: 0 auto"></div> -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApJGzCllhUXaFxRLxToaHDiQECpbK67P0&libraries=places&callback=initGeolocation" async defer></script>
+        </footer>
+        <!-- Footer end -->
 
-</body>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApJGzCllhUXaFxRLxToaHDiQECpbK67P0&libraries=places&callback=initGeolocation" async defer></script>
+    </body>
 </html>
